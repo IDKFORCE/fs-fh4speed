@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <link href="css/hud.css" rel="stylesheet" type="text/css" />
+        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+		<script src="js/gauge.min.js"></script>
+        <script src="js/hud.js" type="text/javascript"></script>
+		<!-- for fuel -->
+		<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+		<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+		<!-- for fuel -->
+    </head>
+    <body>
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<filter id="blur2">
+					<feGaussianBlur stdDeviation="20 0"></feGaussianBlur>
+				</filter>
+				<filter id="blur3">
+					<feGaussianBlur stdDeviation="11 0"></feGaussianBlur>
+				</filter>
+			</defs>
+		</svg>
+        <div id="container">
+			<canvas id="rpmshow"
+				data-type="radial-gauge"
+				data-width="320"
+				data-height="320"
+				data-units=""
+				data-title="false"
+				data-min-value="0"
+				data-max-value="9"
+				data-value="0.00"
+				data-animate-on-init="false"
+				data-major-ticks="0,1,2,3,4,5,6,7,8,9"
+				data-minor-ticks="4"
+				data-stroke-ticks="true"
+				data-highlights='[{"from": 7.5, "to": 9, "color": "rgba(242,83,108,0)"}]'
+				data-color-plate="rgba(0,0,0,0)"
+				data-color-major-ticks="rgba(255,255,255,0)"
+				data-color-minor-ticks="rgba(255,255,255,0)"
+				data-color-title="#fff"
+				data-color-units="rgba(255,255,255,0)"
+				data-color-numbers="rgba(255,255,255,0)"
+				data-color-needle="rgb(255,255,255)"
+				data-color-needle-start="rgb(255,255,255)"
+				data-color-needle-end="rgb(255,255,255)"
+				data-value-box="false"
+				data-animated-value="false"
+				data-borders="false"
+				data-border-shadow-width="0"
+				data-needle-type="line"
+				data-needle-width="2"
+				data-needle-circle-size="0"
+				data-needle-shadow="false"
+				data-needle-circle-outer="true"
+				data-needle-circle-inner="false"
+				data-needle-start="25"
+				data-color-needle-circle-outer="rgba(0,0,0,0)"
+				data-color-needle-circle-inner="rgba(0,0,0,0)"
+				data-ticks-angle="230"
+				data-start-angle="30"
+				data-ticks-width="5"
+				data-ticks-width-minor="5"
+				data-color-needle-shadow-down="rgba(0,0,0,0)"
+				data-value-box-width="45"
+				data-font-numbers="Oswald-Regular"
+				data-font-value="Oswald-Regular"
+			></canvas>
+			<canvas id="rpmbg"
+				data-type="radial-gauge"
+				data-width="320"
+				data-height="320"
+				data-units=""
+				data-title="false"
+				data-min-value="0"
+				data-max-value="9"
+				data-value="0.00"
+				data-animate-on-init="false"
+				data-major-ticks="0,1,2,3,4,5,6,7,8,9"
+				data-minor-ticks="4"
+				data-stroke-ticks="true"
+				data-highlights='[{"from": 7.5, "to": 9, "color": "rgba(242,83,108,0.9)"}]'
+				data-color-plate="rgba(0,0,0,0)"
+				data-color-major-ticks="rgba(255,255,255,0.6)"
+				data-color-minor-ticks="rgba(255,255,255,0.6)"
+				data-color-title="#fff"
+				data-color-units="rgba(255,255,255,0.6)"
+				data-color-numbers="rgba(255,255,255,0.6)"
+				data-color-needle="rgba(255,255,255,0)"
+				data-color-needle-start="rgba(255,255,255,0)"
+				data-color-needle-end="rgba(255,255,255,0)"
+				data-value-box="false"
+				data-animated-value="false"
+				data-borders="false"
+				data-border-shadow-width="0"
+				data-needle-type="none"
+				data-needle-width="0"
+				data-needle-circle-size="0"
+				data-needle-shadow="false"
+				data-needle-circle-outer="true"
+				data-needle-circle-inner="false"
+				data-needle-start="25"
+				data-color-needle-circle-outer="rgba(0,0,0,0)"
+				data-color-needle-circle-inner="rgba(0,0,0,0)"
+				data-ticks-angle="230"
+				data-start-angle="30"
+				data-ticks-width="5"
+				data-ticks-width-minor="5"
+				data-color-needle-shadow-down="rgba(0,0,0,0)"
+				data-value-box-width="45"
+				data-font-numbers="Oswald-Regular"
+				data-font-value="Oswald-Regular"
+			></canvas>
+			<img src="images/speedcircle.png" class="speedcircle" />
+			<div class="geardisplay"><span>1</span></div>
+			<div class="speeddisplay"><span class="gray">0</span><span class="gray">0</span><span class="gray">0</span></div>
+			<div class="unitdisplay">MPH</div> <!-- Change This If Using KMH -->
+			<div class="abs"><span class="gray">ABS</span></div>
+			<div class="handbrake"><span class="gray">HBK</span></div>
+
+			<!-- fuel start -->
+			<div class="pump mxPack">
+				<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M 8 5 C 6.355469 5 5 6.355469 5 8 L 5 27 L 19 27 L 19 20 L 21 20 L 21 24 C 21 25.644531 22.355469 27 24 27 C 25.644531 27 27 25.644531 27 24 L 27 13.8125 C 27 13.015625 26.6875 12.28125 26.125 11.71875 L 21.40625 7 L 20 8.40625 L 22.84375 11.25 C 21.769531 11.707031 21 12.765625 21 14 C 21 15.644531 22.355469 17 24 17 C 24.351563 17 24.683594 16.925781 25 16.8125 L 25 24 C 25 24.566406 24.566406 25 24 25 C 23.433594 25 23 24.566406 23 24 L 23 20 C 23 18.90625 22.09375 18 21 18 L 19 18 L 19 8 C 19 6.355469 17.644531 5 16 5 Z M 8 7 L 16 7 C 16.566406 7 17 7.433594 17 8 L 17 12 L 7 12 L 7 8 C 7 7.433594 7.433594 7 8 7 Z M 24 13 C 24.5625 13 25 13.4375 25 14 C 25 14.5625 24.5625 15 24 15 C 23.4375 15 23 14.5625 23 14 C 23 13.4375 23.4375 13 24 13 Z M 7 14 L 17 14 L 17 25 L 7 25 Z"/></svg>
+			</div>
+
+			<!-- indicators -->
+
+			<div class="indicator mxPack">
+				<svg id="bothIndicators" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.941 169.941V216H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.568 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296h243.882v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.568 0-33.941l-86.059-86.059c-15.119-15.12-40.971-4.412-40.971 16.97z"/></svg>
+				<svg id="rightIndicator" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M0 304v-96c0-13.3 10.7-24 24-24h200V80.2c0-21.4 25.8-32.1 41-17L441 239c9.4 9.4 9.4 24.6 0 34L265 448.7c-15.1 15.1-41 4.4-41-17V328H24c-13.3 0-24-10.7-24-24z"/></svg>
+				<svg id="leftIndicator" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 208v96c0 13.3-10.7 24-24 24H224v103.8c0 21.4-25.8 32.1-41 17L7 273c-9.4-9.4-9.4-24.6 0-34L183 63.3c15.1-15.1 41-4.4 41 17V184h200c13.3 0 24 10.7 24 24z"/></svg>
+			</div>
+
+			<!-- engine hp -->
+			<div class="engineHp mxPack">
+				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g transform="translate(1 1)"><g><path d="M502.467,186.733h-34.133c-3.413,0-6.827,2.56-7.68,5.973l-23.893,70.827h-23.04l-23.04-38.4c-1.707-2.56-4.267-4.267-7.68-4.267h-34.133v-25.6c0-5.12-3.413-8.533-8.533-8.533H280.6V152.6h25.6c5.12,0,8.533-3.413,8.533-8.533v-51.2c0-5.12-3.413-8.533-8.533-8.533H152.6c-5.12,0-8.533,3.413-8.533,8.533v51.2c0,5.12,3.413,8.533,8.533,8.533h25.6v34.133h-68.267c-2.56,0-4.267,0.853-5.973,2.56s-2.56,3.413-2.56,5.973v25.6H41.667c-5.12,0-8.533,3.413-8.533,8.533v51.2H16.067V255c0-5.12-3.413-8.533-8.533-8.533S-1,249.88-1,255v68.267c0,5.12,3.413,8.533,8.533,8.533s8.533-3.413,8.533-8.533v-25.6h17.067v68.267c0,5.12,3.413,8.533,8.533,8.533h64l31.573,47.787c1.707,1.707,4.267,3.413,6.827,3.413H383c3.413,0,5.973-1.707,7.68-5.12l23.04-46.08h23.893l23.04,46.08c1.707,3.413,4.267,5.12,7.68,5.12h34.133c5.12,0,8.533-3.413,8.533-8.533V195.267C511,190.147,507.587,186.733,502.467,186.733z M161.133,101.4h136.533v34.133h-25.6h-85.333h-25.6V101.4z M195.267,152.6h68.267v34.133h-68.267V152.6z M50.2,357.4V237.933h51.2V357.4H50.2z M377.027,408.6H148.333l-29.867-45.204V229.4v-25.6h68.267h85.333H331.8v25.6c0,5.12,3.413,8.533,8.533,8.533h37.547l22.187,36.978v87.609L377.027,408.6z M417.133,357.4v-76.8H434.2v76.8H417.133z M493.933,408.6h-20.48l-22.187-42.789v-93.714l23.04-68.297h19.627V408.6z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+			</div>
+
+			<!-- lights -->
+			<div class="headlights mxPack">
+				<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 211.398 211.398" style="enable-background:new 0 0 211.398 211.398;" xml:space="preserve"><g><path d="M182.325,56.618c-16.482-12.067-37.006-19.272-54.901-19.272c-18.011,0-31.322,7.262-39.563,21.583c-6.457,11.221-9.597,26.52-9.597,46.771c0,20.25,3.139,35.549,9.597,46.771c8.242,14.321,21.553,21.583,39.563,21.583c17.895,0,38.419-7.205,54.901-19.272c18.748-13.727,29.073-31.158,29.073-49.081C211.398,87.775,201.073,70.345,182.325,56.618z M173.464,142.677c-13.795,10.101-31.437,16.375-46.04,16.375c-15.904,0-34.16-6.064-34.16-53.353s18.256-53.354,34.16-53.354c14.604,0,32.245,6.274,46.04,16.375c14.575,10.671,22.935,24.149,22.935,36.979C196.398,118.528,188.039,132.006,173.464,142.677z"/><path d="M64.055,44.945L7.5,44.944c-4.142,0-7.5,3.358-7.5,7.5s3.358,7.5,7.5,7.5l56.555,0.001c4.142,0,7.5-3.358,7.5-7.5S68.197,44.945,64.055,44.945z"/><path d="M64.055,72.299H7.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h56.555c4.142,0,7.5-3.358,7.5-7.5C71.555,75.657,68.197,72.299,64.055,72.299z"/><path d="M64.055,99.653H7.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h56.555c4.142,0,7.5-3.358,7.5-7.5C71.555,103.011,68.197,99.653,64.055,99.653z"/><path d="M64.055,127.008H7.5c-4.142,0-7.5,3.358-7.5,7.5s3.358,7.5,7.5,7.5h56.555c4.142,0,7.5-3.358,7.5-7.5S68.197,127.008,64.055,127.008z"/><path d="M64.055,154.362H7.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h56.555c4.142,0,7.5-3.358,7.5-7.5C71.555,157.72,68.197,154.362,64.055,154.362z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+			</div>
+
+
+
+
+        </div>
+
+    </body>
+	<script type="text/javascript">
+	if (!Array.prototype.forEach) {
+		Array.prototype.forEach = function(cb) {
+			var i = 0, s = this.length;
+			for (; i < s; i++) {
+				cb && cb(this[i], i, this);
+			}
+		}
+	}
+	document.fonts && document.fonts.forEach(function(font) {
+		font.loaded.then(function() {
+			if (font.family.match(/Oswald-Regular/)) {
+				document.gauges.forEach(function(gauge) {
+					gauge.update();
+					gauge.options.renderTo.style.visibility = 'visible';
+				});
+			}
+		});
+	});
+	</script>
+</html>
