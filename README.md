@@ -1,5 +1,9 @@
 # fs-fh4speed
 
+```My Discord```
+- [Discord](https://discord.gg/6kJ5ubDEWE)
+
+
 ## Installition
 Just Drag And Drop
 ## Showcase
