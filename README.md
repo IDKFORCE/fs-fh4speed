@@ -1,7 +1,7 @@
 # fs-fh4speed
 
 ```My Discord```
-- [Discord](https://discord.gg/6kJ5ubDEWE)
+- [Discord](https://discord.gg/UFng7DWnWP)
 
 
 ## Installition
